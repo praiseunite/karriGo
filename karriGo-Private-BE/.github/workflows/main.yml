@@ -1,0 +1,62 @@
+name: karrigo-ci
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: [ubuntu-latest]
+
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v3
+
+      - name: Set-up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build the application
+        run: |
+          mvn clean
+          mvn -B package -DskipTests=true --file pom.xml
+
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker Image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/karrigo .
+
+      - name: Push to Docker Hub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/karrigo:latest
+
+
+  deploy:
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - name: Set up permissions for Docker socket
+        run: sudo chmod 666 /var/run/docker.sock
+
+      - name: Pull Docker image
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          docker pull "${{ secrets.DOCKER_USERNAME }}/karrigo:latest"
+
+      - name: Remove Old Container
+        run: docker rm -f karrigo-app || true
+
+      - name: Run Docker Container
+        run: docker run -d -p 8085:8085 --name karrigo-app "${{ secrets.DOCKER_USERNAME }}/karrigo:latest"
+

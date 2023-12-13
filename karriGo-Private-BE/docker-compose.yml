@@ -1,0 +1,56 @@
+    version: '3.3'
+    services:
+
+      karrigo:
+        container_name: karrigo
+        build:
+          context: .
+          dockerfile: Dockerfile
+        ports:
+          - "8085:8085"
+        environment:
+          - EMAIL_USERNAME=${EMAIL_USERNAME}
+          - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+        depends_on:
+          - postgres
+        networks:
+          - bridge
+
+      postgres:
+        image: postgres
+        ports:
+          - "5452:5434"
+        environment:
+          - POSTGRES_PASSWORD=password
+          - POSTGRES_USER=postgres
+          - POSTGRES_DB=karri_go_db
+        volumes:
+          - postgres:/data/postgres
+        networks:
+          - bridge
+
+      pgadmin:
+        container_name: karrigo_pgadmin
+        image: dpage/pgadmin4
+        environment:
+          PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+          PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+          PGADMIN_CONFIG_SERVER_MODE: 'False'
+        volumes:
+          - pgadmin:/var/lib/pgadmin
+        ports:
+          - 5050:80
+        networks:
+          - bridge
+        restart: unless-stopped
+
+
+    networks:
+      bridge:
+        driver: bridge
+      spring:
+        driver: bridge
+
+    volumes:
+      postgres:
+      pgadmin:

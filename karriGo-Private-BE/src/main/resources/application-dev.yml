@@ -1,0 +1,73 @@
+#spring:
+#  datasource:
+#    url: ${JDBC_URL}
+#    username: ${DB_USERNAME}
+#    password: ${DB_PASSWORD}
+#
+#  jpa:
+#    properties:
+#      hibernate:
+#        format_sql: true
+#
+#        jdbc:
+#          time_zone: UTC+1
+#
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: false
+#
+#  mail:
+#    password: ${EMAIL_PASSWORD}
+#    username: ${EMAIL_USERNAME}
+#    host: smtp.gmail.com
+#    port: 587
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+#
+#  kafka:
+#    bootstrap-servers: ${BOOTSTRAP_SERVERS}
+#    consumer:
+#      group-id: KarriGo
+#      auto-offset-reset: earliest
+#
+#    properties:
+#      security:
+#        protocol: SASL_SSL
+#      sasl:
+#        mechanism: SCRAM-SHA-256
+#        jaas:
+#          config: ${JAAS_CONFIG}
+##          config: org.apache.kafka.common.security.scram.ScramLoginModule required username="ZnVua3ktc3BhcnJvdy0xMjU1MyRvnoNCXo-bH9hF_0NFxHoStyCTx8FXYJciVtE" password="YWEwODA0YjgtNzI1NS00Yzk1LWFjNWMtMTg2NWEyZDUwZTlm";
+#
+#
+#server:
+#  port: 8085
+#
+#
+#cloudinary:
+#  name: ${CLOUDINARY_NAME}
+#  api_key: ${CLOUDINARY_API_KEY}
+#  secret: ${CLOUDINARY_SECRET}
+#
+#springdoc:
+#  api-docs:
+#    enabled: true
+#    path: /javainuse-openapi/index.html
+#
+#logging:
+#  level:
+#    org.springframework: INFO
+#    com.decagon.karrigobe: DEBUG
+#    org:
+#      apache:
+#        kafka: OFF
+#
+#cors:
+#  allowedOrigins: ${ALLOWED_ORIGINS}
+#
+#frontend:
+#  url: ${FRONTEND_URL}
