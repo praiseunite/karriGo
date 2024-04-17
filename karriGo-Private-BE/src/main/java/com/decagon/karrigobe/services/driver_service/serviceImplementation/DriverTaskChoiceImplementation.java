@@ -39,7 +39,7 @@ public class DriverTaskChoiceImplementation implements DriverTaskChoice {
         userRepo.save(driver);
 
 
-        if (status.equalsIgnoreCase("ACCEPTED")) {
+        if ("ACCEPTED".equalsIgnoreCase(status)) {
             return "Task has been accepted";
         }
         return "Task has been rejected";

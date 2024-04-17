@@ -258,9 +258,9 @@ public class OrderServiceImpl implements OrderService {
         return BigDecimal.valueOf(COST_PER_KM * distance)
                 .add(BigDecimal.valueOf(weight <= 5.0 ? 0 : COST_PER_KG * weight))
                 .add(BigDecimal.valueOf(COST_PER_50K * (declaredPrice / 50_000.0)))
-                .add(BigDecimal.valueOf(itemCategory.equalsIgnoreCase("FRAGILE") ? COST_FRAGILE
-                        : itemCategory.equalsIgnoreCase("PERISHABLES") ? COST_PERISHABLE
-                        : itemCategory.equalsIgnoreCase("DOCUMENTS") ? COST_DOCUMENT : 0))
+                .add(BigDecimal.valueOf("FRAGILE".equalsIgnoreCase(itemCategory) ? COST_FRAGILE
+                        : "PERISHABLES".equalsIgnoreCase(itemCategory) ? COST_PERISHABLE
+                        : "DOCUMENTS".equalsIgnoreCase(itemCategory) ? COST_DOCUMENT : 0))
                 .add(BigDecimal.valueOf(area < 10.0 ? 0 : area * COST_PER_AREA));
     }
 
