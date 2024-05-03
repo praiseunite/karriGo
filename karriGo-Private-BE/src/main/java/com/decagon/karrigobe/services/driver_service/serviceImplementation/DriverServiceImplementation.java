@@ -17,6 +17,7 @@ import com.decagon.karrigobe.repositories.UserRepository;
 import com.decagon.karrigobe.services.driver_service.DriverService;
 import com.decagon.karrigobe.services.driver_service.DriverTaskChoice;
 import com.decagon.karrigobe.services.notification_service.serviceimplementation.NotificationServiceImplementation;
+import java.security.SecureRandom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -54,7 +55,7 @@ public class DriverServiceImplementation implements DriverService {
     public void generateRandomOrder() {
         List<OrderEntity> allConfirmedOrders = orderRepository.findAllByStatusAndDriverTaskEntityIsNull(ORDER_CONFIRMED);
         List<UserEntity> drivers = userRepository.findByRolesAndDriverStatus(DRIVER, AVAILABLE);
-        Random random = new Random();
+        Random random = new SecureRandom();
         OrderEntity customerOrder = (allConfirmedOrders.size() == 1) ? allConfirmedOrders.get(0) :
                 allConfirmedOrders.get(random.nextInt(0, allConfirmedOrders.size() - 1));
 
@@ -71,7 +72,7 @@ public class DriverServiceImplementation implements DriverService {
     @Override
     public void assignTaskToDriver(List<UserEntity> driverList, OrderEntity order) {
         new Thread(() -> {
-            Random random = new Random();
+            Random random = new SecureRandom();
             long startTime = System.currentTimeMillis();
             long timeLimit = 5 * 60 * 1000;
 

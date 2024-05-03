@@ -1,5 +1,6 @@
 package com.decagon.karrigobe.utils;
 
+import java.security.SecureRandom;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
@@ -25,7 +26,7 @@ public class CustomIdGenerator {
                 .replace(".","").substring(4, (now.toString().length()-12));
 
 
-        Random random = new Random();
+        Random random = new SecureRandom();
         random.nextInt(65, 90);
 
         String un = String.valueOf(random.nextInt());
